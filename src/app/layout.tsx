@@ -5,7 +5,9 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-// import { NavBar } from '@/app/_components/NavBar';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+import { NavBar } from '@/app/_components/NavBar';
+import { Container } from '@mui/system';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,8 +32,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* <NavBar></NavBar> */}
-        {children}
+        <AppRouterCacheProvider>
+          {/* <MainHeader title={companyName}></MainHeader> */}
+          <NavBar />
+
+          <Container maxWidth="xl" fixed>
+            {children}
+
+            {/* <Footer title={companyName}></Footer> */}
+          </Container>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

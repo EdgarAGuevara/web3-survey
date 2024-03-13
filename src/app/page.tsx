@@ -1,27 +1,37 @@
-import Image from 'next/image';
-import styles from './page.module.css';
+import { Container, Box } from '@mui/material';
 import Link from 'next/link';
+import { Survey } from '@/app/_components/SurveyCard';
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>Welcome</p>
-        <Link href="/survey">Surveys</Link>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>By Edgar A Guevara.</div>
-    </main>
+    <Container maxWidth="sm" fixed>
+      <Box sx={{ height: '100vh', mt: 2 }}>
+        <Survey
+          title={'Sample Survey'}
+          image={
+            'https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg'
+          }
+          questions={[
+            {
+              text: 'Question1',
+              image:
+                'https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg',
+              lifetimeSeconds: 10,
+              options: [
+                {
+                  text: 'Opt1',
+                },
+                {
+                  text: 'Opt2',
+                },
+                {
+                  text: 'Opt',
+                },
+              ],
+            },
+          ]}
+        ></Survey>
+      </Box>
+    </Container>
   );
 }

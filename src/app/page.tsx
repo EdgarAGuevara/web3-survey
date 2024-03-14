@@ -1,5 +1,4 @@
 import { Container, Box } from '@mui/material';
-import Link from 'next/link';
 import { Survey } from '@/app/_components/SurveyCard';
 
 export default function Home() {

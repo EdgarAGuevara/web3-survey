@@ -39,6 +39,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - [NEXT](https://nextjs.org/)
 - [REACT QUERY](https://tanstack.com/query/latest)
 - [Material UI](https://mui.com/material-ui/getting-started/installation/)
+- [web3.js](https://web3js.readthedocs.io/en/v1.10.0/getting-started.html)
+- [web3-react](https://github.com/Uniswap/web3-react/tree/v6/docs)
+- [web3-react-connector](https://github.com/Uniswap/web3-react/blob/v6/docs/connectors/README.md)
 
 # web3-survey
 

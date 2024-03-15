@@ -17,44 +17,73 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-import useSurveys, { Option, Question, Survey } from '@/app/_hooks/useSurveys';
+import { SurveyCard } from '@/app/_components/SurveyCard';
+import useSurveys, { Option, Survey } from '@/app/_hooks/useSurveys';
 
 interface QuestionViewProps {}
 
 const QuestionView: FC<QuestionViewProps> = () => {
-  const { questions }: Survey = useSurveys();
+  const { questions, title, image, id }: Survey = useSurveys();
 
-  const [anwser, setAnwser] = useState('');
-  const [optionSelected, setOptionSelected] = useState('');
+  const [anwsersList, setAnwsersList] = useState<number[]>([]);
+  const [optionSelected, setOptionSelected] = useState<Option>();
+  const [questionSelected, setQuestionSelected] = useState(questions[0]);
+  const [positionSelected, setPositionSelected] = useState(0);
+  const [completedSurvey, setCompletedSurvey] = useState(false);
 
   const handleAnswer = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const valueSelected = optionSelected !== undefined ? optionSelected?.id : 0;
 
-    console.log(optionSelected);
+    setAnwsersList([...anwsersList, valueSelected]);
+
+    nextQuestion();
   };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOptionSelected((event.target as HTMLInputElement).value);
+    const id = Number((event.target as HTMLInputElement).value);
+    setOptionSelected(questions.find((question) => question.id === id));
+  };
+
+  const nextQuestion = () => {
+    const nextPos = positionSelected + 1;
+    if (nextPos >= questions.length) {
+      setCompletedSurvey(true);
+    }
+    setPositionSelected(nextPos);
+    setQuestionSelected(questions[nextPos]);
   };
 
   return (
     <Container maxWidth="md" fixed>
       <Box sx={{ mt: 5 }}>
-        {questions.map((question: Question) => (
-          <Accordion key={question.text}>
+        {completedSurvey ? (
+          <SurveyCard
+            surveyId={id}
+            title={title}
+            image={image}
+            questions={questions}
+            anwsersList={anwsersList}
+          ></SurveyCard>
+        ) : (
+          <Accordion key={questionSelected.text} defaultExpanded>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel3-content"
               id="panel3-header"
             >
-              {question.text}
+              {questionSelected.text}
             </AccordionSummary>
 
             <AccordionDetails>
               <Card>
-                <CardMedia sx={{ height: 200 }} image={question.image} title={question.text} />
+                <CardMedia
+                  sx={{ height: 200 }}
+                  image={questionSelected.image}
+                  title={questionSelected.text}
+                />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     Options
@@ -65,13 +94,13 @@ const QuestionView: FC<QuestionViewProps> = () => {
                         <RadioGroup
                           aria-labelledby="Options-radio"
                           name="Options"
-                          value={optionSelected}
+                          value={optionSelected?.id}
                           onChange={handleOptionChange}
                         >
-                          {question.options.map((option: Option) => (
+                          {questionSelected.options.map((option: Option) => (
                             <FormControlLabel
-                              key={option.text}
-                              value={option.text}
+                              key={option.id}
+                              value={option.id}
                               control={<Radio />}
                               label={option.text}
                             />
@@ -83,12 +112,12 @@ const QuestionView: FC<QuestionViewProps> = () => {
                       </FormControl>
                     </form>
                   </Typography>
-                  <div>{question.lifetimeSeconds}</div>
+                  <div>{questionSelected.lifetimeSeconds}</div>
                 </CardContent>
               </Card>
             </AccordionDetails>
           </Accordion>
-        ))}
+        )}
       </Box>
     </Container>
   );

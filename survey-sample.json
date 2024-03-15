@@ -1,51 +1,64 @@
 {
+  "id": 1,
   "title": "Sample Survey",
   "image": "https://imagizer.imageshack.com/img661/3954/bwalqa.jpg",
   "questions": [
     {
+      "id": 1,
       "text": "Question1",
       "image": "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
       "lifetimeSeconds": 10,
       "options": [
         {
+          "id": 1,
           "text": "Opt1"
         },
         {
+          "id": 2,
           "text": "Opt2"
         },
         {
+          "id": 3,
           "text": "Opt"
         }
       ]
     },
     {
+      "id": 2,
       "text": "Question2",
       "image": "https://filedn.com/ltOdFv1aqz1YIFhf4gTY8D7/ingus-info/BLOGS/Photography-stocks3/stock-photography-slider.jpg",
       "lifetimeSeconds": 5,
       "options": [
         {
+          "id": 1,
           "text": "Opt1"
         },
         {
+          "id": 2,
           "text": "Opt2"
         },
         {
+          "id": 3,
           "text": "Opt"
         }
       ]
     },
     {
+      "id": 3,
       "text": "Pregunta 2",
       "image": "https://filedn.com/ltOdFv1aqz1YIFhf4gTY8D7/ingus-info/BLOGS/Photography-stocks3/stock-photography-slider.jpg",
       "lifetimeSeconds": 5,
       "options": [
         {
+          "id": 1,
           "text": "Opt1"
         },
         {
+          "id": 2,
           "text": "Opt2"
         },
         {
+          "id": 3,
           "text": "Opt"
         }
       ]

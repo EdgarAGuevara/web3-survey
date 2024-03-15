@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+import theme from '@/app/theme';
+
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { NavBar } from '@/app/_components/NavBar';
 import { Container } from '@mui/system';
@@ -35,11 +35,14 @@ export default function RootLayout({
       <body className={inter.className}>
         <Web3Provider>
           <AppRouterCacheProvider>
-            <NavBar />
-
-            <Container maxWidth="xl" fixed>
-              {children}
-            </Container>
+            {' '}
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <NavBar />
+              <Container maxWidth="xl" fixed>
+                {children}
+              </Container>{' '}
+            </ThemeProvider>
           </AppRouterCacheProvider>
         </Web3Provider>
       </body>

@@ -1,6 +1,6 @@
 'use client';
 
-import { AppBar, Button, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, Toolbar, Typography, Link } from '@mui/material';
 import { Box } from '@mui/system';
 import { FC } from 'react';
 
@@ -13,9 +13,10 @@ export const NavBar: FC<NavBarProps> = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Link href="/" color="inherit" underline="none" variant="h5" sx={{ flexGrow: 1 }}>
+            {' '}
             Survey with Tokens
-          </Typography>
+          </Link>
           <WalletData />
         </Toolbar>
       </AppBar>

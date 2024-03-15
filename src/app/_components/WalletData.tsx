@@ -1,11 +1,11 @@
 'use client';
 
-import { Button, Typography, Chip, Badge, IconButton } from '@mui/material';
-import { Box } from '@mui/system';
-import { useCallback, useEffect, useState, FC } from 'react';
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { connector } from '@/app/_config/web3';
 import useTruncatedAddress from '@/app/_hooks/useTruncatedAddress';
+import { Badge, Button, Chip } from '@mui/material';
+import { Box } from '@mui/system';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+import { FC, useCallback, useEffect, useState } from 'react';
 
 interface WalletDataProps {}
 
@@ -37,12 +37,10 @@ export const WalletData: FC<WalletDataProps> = () => {
   }, [library?.eth, account]);
 
   useEffect(() => {
-    console.log(active);
-    if (active) getBalance();
+    if (active === true) getBalance();
   }, [active, getBalance]);
 
   useEffect(() => {
-    console.log('useeffecting');
     if (localStorage.getItem('previouslyConnected') === 'true') connect();
   }, [connect]);
 

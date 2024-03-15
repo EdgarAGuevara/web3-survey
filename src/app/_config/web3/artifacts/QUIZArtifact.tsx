@@ -1,6 +1,38 @@
-const PlatziPunksEAGArtifact = {
+interface QUIZArtifact {
+  address: Address;
+  abi: Abi[];
+}
+
+interface Address {
+  [chainId: number]: string;
+}
+
+interface Abi {
+  anonymous?: Boolean;
+  inputs?: Input[];
+  outputs?: Output[];
+  stateMutability?: string;
+  name?: string;
+  type?: string;
+}
+
+interface Input {
+  indexed?: Boolean;
+  internalType?: string;
+  name?: string;
+  type?: string;
+}
+
+interface Output {
+  indexed?: Boolean;
+  internalType?: string;
+  name?: string;
+  type?: string;
+}
+
+const QUIZArtifact: QUIZArtifact = {
   address: {
-    4: '0x437eF217203452317C3C955Cf282b1eE5F6aaF72',
+    5: '0x437eF217203452317C3C955Cf282b1eE5F6aaF72',
   },
   abi: [
     {
@@ -188,4 +220,4 @@ const PlatziPunksEAGArtifact = {
   ],
 };
 
-export default PlatziPunksEAGArtifact;
+export default QUIZArtifact;

@@ -4,7 +4,7 @@ import { InjectedConnector } from '@web3-react/injected-connector';
 const connector = new InjectedConnector({
   supportedChainIds: [5],
 });
-const getLibrary = (provider) => {
+const getLibrary = (provider: any) => {
   return new Web3(provider);
 };
 

@@ -15,7 +15,7 @@ interface QuestionProps {
   options: any[];
 }
 
-export const Survey: FC<SurveyProps> = ({ title, image, questions }) => {
+export const SurveyCard: FC<SurveyProps> = ({ title, image, questions }) => {
   return (
     <Card sx={{ maxWidth: 450 }}>
       <CardMedia component="img" alt="Survey image" height="350" image={image} />

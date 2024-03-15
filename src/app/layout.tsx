@@ -35,13 +35,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <Web3Provider>
           <AppRouterCacheProvider>
-            {' '}
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <NavBar />
-              <Container maxWidth="xl" fixed>
-                {children}
-              </Container>{' '}
+              {children}
             </ThemeProvider>
           </AppRouterCacheProvider>
         </Web3Provider>

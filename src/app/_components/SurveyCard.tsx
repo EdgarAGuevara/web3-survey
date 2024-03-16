@@ -18,6 +18,7 @@ import { FC, useState } from 'react';
 import useQUIZTokens from '@/app/_hooks/useQUIZTokens';
 import { useWeb3React } from '@web3-react/core';
 import Link from 'next/link';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface SurveyProps {
   surveyId?: number;
@@ -45,6 +46,12 @@ export const SurveyCard: FC<SurveyProps> = ({ surveyId, title, image, questions,
     status: '',
   });
 
+  const queryClient = useQueryClient();
+
+  const refetchBalance = () => {
+    queryClient.invalidateQueries({ queryKey: ['tokensBalance'] });
+  };
+
   const handleClose = () => {
     setToast({
       ...toast,
@@ -66,15 +73,16 @@ export const SurveyCard: FC<SurveyProps> = ({ surveyId, title, image, questions,
             description: txHash,
             status: 'info',
           });
+          refetchBalance();
         })
         .on('receipt', (receipt: any) => {
-          console.log(receipt);
           setToast({
             open: true,
             title: 'Transaction received it',
             description: '',
             status: 'success',
           });
+          refetchBalance();
         })
         .on('error', (error: any) => {
           alert(`Transacción fallida ${error?.message}`);
@@ -85,7 +93,6 @@ export const SurveyCard: FC<SurveyProps> = ({ surveyId, title, image, questions,
             status: 'error',
           });
         });
-      const supplyTotal = await quizTokens.methods.totalSupply().call();
     }
   };
 
@@ -102,24 +109,26 @@ export const SurveyCard: FC<SurveyProps> = ({ surveyId, title, image, questions,
             Overview of {title}
           </Typography>{' '}
           <Typography variant="body2" color="text.secondary">
-            Number of questions: {questions.length}
+            Number of questions: {questions?.length}
           </Typography>
           {anwsersList !== undefined ? (
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {anwsersList.map((anwser, index) => (
-                <ListItem alignItems="flex-start">
+              {questions?.map((question, index) => (
+                <ListItem key={question.id + question.text} alignItems="flex-start">
                   <ListItemText
-                    primary={`${index + 1} - ${questions[index].text}`}
+                    primary={`${index + 1} - ${question.text}`}
                     secondary={
-                      questions[index].options.find((option) => option.id === anwser)?.text
+                      anwsersList !== undefined && anwsersList.length > 0
+                        ? question.options.find((option) => option.id === anwsersList[index])?.text
+                        : ''
                     }
                   />
                 </ListItem>
               ))}
             </List>
           ) : (
-            ''
-          )}{' '}
+            ' '
+          )}
         </CardContent>
         <CardActions>
           {anwsersList !== undefined ? (

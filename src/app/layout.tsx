@@ -1,14 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+
 import { NavBar } from '@/app/_components/NavBar';
-import { Container } from '@mui/system';
-import Web3Provider from '@/app/_providers/web3-proviver';
+import Providers from '@/app/_util/Providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,15 +27,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Web3Provider>
-          <AppRouterCacheProvider>
-            <NavBar />
-
-            <Container maxWidth="xl" fixed>
-              {children}
-            </Container>
-          </AppRouterCacheProvider>
-        </Web3Provider>
+        <Providers>
+          <NavBar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

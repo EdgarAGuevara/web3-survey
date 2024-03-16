@@ -9,7 +9,7 @@ const useQUIZTokens: any = () => {
   const { active, library, chainId } = useWeb3React();
 
   const quizTokens = useMemo(() => {
-    if (active) {
+    if (active === true) {
       return new library.eth.Contract(abi, address[typeof chainId === 'number' ? chainId : 0]);
     }
   }, [active, chainId, library?.eth?.Contract]);

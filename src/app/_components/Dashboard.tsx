@@ -1,37 +1,45 @@
 'use client';
 
-import { Container, Box, Button } from '@mui/material';
-import { SurveyCard } from '@/app/_components/SurveyCard';
+import { Container, Box, Button, Grid, Paper, CircularProgress } from '@mui/material';
 import { FC } from 'react';
-import useQUIZTokens from '@/app/_hooks/useQUIZTokens';
-import useSurveys, { Survey } from '@/app/_hooks/useSurveys';
 import { useWeb3React } from '@web3-react/core';
+import useQUIZTokens from '@/app/_hooks/useQUIZTokens';
+import { SurveyCard } from '@/app/_components/SurveyCard';
+import BalanceData from '@/app/_components/BalanceData';
+import surveysSource from '../../../survey-sample.json';
+import { useQuery } from '@tanstack/react-query';
 
 interface DashboardProps {}
 
 const Dashboard: FC<DashboardProps> = () => {
   const { account } = useWeb3React();
   const quizTokens: any = useQUIZTokens();
-  const { title, questions, image }: Survey = useSurveys();
-
-  const getTokensBalance = async () => {
-    if (quizTokens) {
-      console.log(account);
-      const tokensTotal = await quizTokens.methods.balanceOf(account).call();
-      const supplyTotal = await quizTokens.methods.totalSupply().call();
-      console.log(tokensTotal, supplyTotal);
-    }
-  };
+  const { data, isPending, error } = useQuery({
+    queryKey: ['surveys'],
+    queryFn: () => surveysSource,
+  });
 
   return (
-    <Container maxWidth="sm" fixed>
-      <Box sx={{ height: '100vh', mt: 2 }}>
-        <Button variant="contained" onClick={getTokensBalance}>
-          GetBalance
-        </Button>
-        <SurveyCard title={title} image={image} questions={questions}></SurveyCard>
-      </Box>
-    </Container>
+    <Box sx={{ height: '100vh', m: 4, flexGrow: 1 }}>
+      <Grid container spacing={12}>
+        <Grid item xs={8}>
+          {!data ? (
+            <CircularProgress />
+          ) : (
+            <SurveyCard
+              title={data.title}
+              image={data.image}
+              questions={data.questions}
+            ></SurveyCard>
+          )}
+        </Grid>
+        <Grid item xs={4}>
+          <Paper elevation={3}>
+            <BalanceData />
+          </Paper>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 

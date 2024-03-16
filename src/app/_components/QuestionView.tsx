@@ -16,25 +16,33 @@ import {
   Paper,
   Radio,
   RadioGroup,
-  Typography
+  Typography,
 } from '@mui/material';
 import { FC, useState } from 'react';
 
 import BalanceData from '@/app/_components/BalanceData';
 import { SurveyCard } from '@/app/_components/SurveyCard';
-import useSurveys, { Option, Survey } from '@/app/_hooks/useSurveys';
+import { Option } from '@/app/_util/SurveysInterface';
+import { useQuery } from '@tanstack/react-query';
+import surveysSource from '../../../survey-sample.json';
+
+import CountdownTimer from '@/app/_components/CountdownTimer';
 
 interface QuestionViewProps {}
 
 const QuestionView: FC<QuestionViewProps> = () => {
-  const { questions, title, image, id }: Survey = useSurveys();
+  const { data, error } = useQuery({
+    queryKey: ['surveys'],
+    queryFn: () => surveysSource,
+  });
+
+  if (data === undefined) return 'An error has occurred: ' + error?.message;
 
   const [anwsersList, setAnwsersList] = useState<number[]>([]);
   const [optionSelected, setOptionSelected] = useState<Option>();
-  const [questionSelected, setQuestionSelected] = useState(questions[0]);
+  const [questionSelected, setQuestionSelected] = useState(data?.questions[0]);
   const [positionSelected, setPositionSelected] = useState(0);
   const [completedSurvey, setCompletedSurvey] = useState(false);
-  const [updateBlance, setUpdateBlance] = useState(false);
 
   const handleAnswer = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,16 +56,16 @@ const QuestionView: FC<QuestionViewProps> = () => {
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = Number((event.target as HTMLInputElement).value);
-    setOptionSelected(questions.find((question) => question.id === id));
+    setOptionSelected(data?.questions.find((question) => question.id === id));
   };
 
   const nextQuestion = () => {
     const nextPos = positionSelected + 1;
-    if (nextPos >= questions.length) {
+    if (nextPos >= data?.questions.length) {
       setCompletedSurvey(true);
     }
     setPositionSelected(nextPos);
-    setQuestionSelected(questions[nextPos]);
+    setQuestionSelected(data?.questions[nextPos]);
   };
 
   return (
@@ -66,10 +74,10 @@ const QuestionView: FC<QuestionViewProps> = () => {
         <Grid item xs={6}>
           {completedSurvey ? (
             <SurveyCard
-              surveyId={id}
-              title={title}
-              image={image}
-              questions={questions}
+              surveyId={data.id}
+              title={data.title}
+              image={data.image}
+              questions={data.questions}
               anwsersList={anwsersList}
             ></SurveyCard>
           ) : (
@@ -117,7 +125,10 @@ const QuestionView: FC<QuestionViewProps> = () => {
                         </FormControl>
                       </form>
                     </Box>
-                    <div>{questionSelected.lifetimeSeconds}</div>
+                    <CountdownTimer
+                      initialCount={questionSelected.lifetimeSeconds}
+                      notify={nextQuestion}
+                    />
                   </CardContent>
                 </Card>
               </AccordionDetails>
@@ -126,7 +137,7 @@ const QuestionView: FC<QuestionViewProps> = () => {
         </Grid>
         <Grid item xs={6}>
           <Paper elevation={3}>
-            <BalanceData updateBlance={updateBlance} setUpdateBlance={setUpdateBlance} />
+            <BalanceData />
           </Paper>
         </Grid>
       </Grid>

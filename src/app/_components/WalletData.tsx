@@ -18,7 +18,6 @@ export const WalletData: FC<WalletDataProps> = () => {
   const isUnsupportedChain = error instanceof UnsupportedChainIdError;
 
   const connect = useCallback(() => {
-    console.log('connecting');
     activate(connector);
     localStorage.setItem('previouslyConnected', 'true');
   }, [activate]);
